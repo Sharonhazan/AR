@@ -1,0 +1,30 @@
+body, html {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    background: black; font-family: sans-serif;
+}
+
+#camera-stream {
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    position: absolute; z-index: 1;
+}
+
+#overlay-container {
+    position: absolute; z-index: 2;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; /* Allows touching UI behind image */
+}
+
+#trace-image {
+    max-width: 100%; transform-origin: center;
+}
+
+.controls {
+    position: absolute; z-index: 3;
+    bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.7); color: white;
+    padding: 15px; border-radius: 15px; width: 80%;
+}
+
+input[type="range"] { width: 100%; margin-bottom: 10px; }
