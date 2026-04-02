@@ -36,8 +36,23 @@ imageLoader.addEventListener('change', (e) => {
     reader.readAsDataURL(e.target.files[0]);
 });
 
+// Fit to Screen
+const fitBtn = document.getElementById('fit-btn');
+fitBtn.addEventListener('click', () => {
+    const isFit = traceImage.classList.toggle('fit-screen');
+    fitBtn.textContent = isFit ? 'Original Size' : 'Fit to Screen';
+    if (isFit) {
+        scaleSlider.value = 1;
+        traceImage.style.transform = '';
+    }
+});
+
 // Controls
 opacitySlider.addEventListener('input', (e) => traceImage.style.opacity = e.target.value);
-scaleSlider.addEventListener('input', (e) => traceImage.style.transform = `scale(${e.target.value})`);
+scaleSlider.addEventListener('input', (e) => {
+    traceImage.classList.remove('fit-screen');
+    fitBtn.textContent = 'Fit to Screen';
+    traceImage.style.transform = `scale(${e.target.value})`;
+});
 
 startCamera();
