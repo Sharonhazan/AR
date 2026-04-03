@@ -43,16 +43,76 @@ fitBtn.addEventListener('click', () => {
     fitBtn.textContent = isFit ? 'Original Size' : 'Fit to Screen';
     if (isFit) {
         scaleSlider.value = 1;
-        traceImage.style.transform = '';
+        updateTransform();
     }
 });
+
+// Drag
+const overlay = document.getElementById('overlay');
+let posX = 0, posY = 0;
+let dragStartX = 0, dragStartY = 0;
+let isDragging = false;
+let locked = false;
+
+const lockBtn = document.getElementById('lock-btn');
+lockBtn.addEventListener('click', () => {
+    locked = !locked;
+    lockBtn.textContent = locked ? 'Unlock Position' : 'Lock Position';
+    lockBtn.classList.toggle('lock-active', locked);
+    overlay.style.pointerEvents = locked ? 'none' : 'auto';
+    traceImage.style.cursor = locked ? 'default' : 'grab';
+});
+
+overlay.style.pointerEvents = 'auto';
+
+function getPointerPos(e) {
+    const pt = e.touches ? e.touches[0] : e;
+    return { x: pt.clientX, y: pt.clientY };
+}
+
+function onDragStart(e) {
+    if (locked) return;
+    isDragging = true;
+    const p = getPointerPos(e);
+    dragStartX = p.x - posX;
+    dragStartY = p.y - posY;
+    traceImage.style.cursor = 'grabbing';
+    e.preventDefault();
+}
+
+function onDragMove(e) {
+    if (!isDragging) return;
+    const p = getPointerPos(e);
+    posX = p.x - dragStartX;
+    posY = p.y - dragStartY;
+    updateTransform();
+    e.preventDefault();
+}
+
+function onDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    traceImage.style.cursor = locked ? 'default' : 'grab';
+}
+
+overlay.addEventListener('mousedown', onDragStart);
+overlay.addEventListener('mousemove', onDragMove);
+overlay.addEventListener('mouseup', onDragEnd);
+overlay.addEventListener('touchstart', onDragStart, { passive: false });
+overlay.addEventListener('touchmove', onDragMove, { passive: false });
+overlay.addEventListener('touchend', onDragEnd);
+
+function updateTransform() {
+    const scale = scaleSlider.value;
+    traceImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+}
 
 // Controls
 opacitySlider.addEventListener('input', (e) => traceImage.style.opacity = e.target.value);
 scaleSlider.addEventListener('input', (e) => {
     traceImage.classList.remove('fit-screen');
     fitBtn.textContent = 'Fit to Screen';
-    traceImage.style.transform = `scale(${e.target.value})`;
+    updateTransform();
 });
 
 startCamera();
