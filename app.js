@@ -40,7 +40,7 @@ imageLoader.addEventListener('change', (e) => {
 const fitBtn = document.getElementById('fit-btn');
 fitBtn.addEventListener('click', () => {
     const isFit = traceImage.classList.toggle('fit-screen');
-    fitBtn.textContent = isFit ? 'Original Size' : 'Fit to Screen';
+    fitBtn.innerHTML = isFit ? '<span class="material-symbols-rounded">fullscreen_exit</span> Original Size' : '<span class="material-symbols-rounded">fit_screen</span> Fit to Screen';
     if (isFit) {
         scaleSlider.value = 1;
         updateTransform();
@@ -57,7 +57,7 @@ let locked = false;
 const lockBtn = document.getElementById('lock-btn');
 lockBtn.addEventListener('click', () => {
     locked = !locked;
-    lockBtn.textContent = locked ? 'Unlock Position' : 'Lock Position';
+    lockBtn.innerHTML = locked ? '<span class="material-symbols-rounded">lock</span> Unlock Position' : '<span class="material-symbols-rounded">lock_open</span> Lock Position';
     lockBtn.classList.toggle('lock-active', locked);
     overlay.style.pointerEvents = locked ? 'none' : 'auto';
     traceImage.style.cursor = locked ? 'default' : 'grab';
@@ -111,7 +111,7 @@ function updateTransform() {
 opacitySlider.addEventListener('input', (e) => traceImage.style.opacity = e.target.value);
 scaleSlider.addEventListener('input', (e) => {
     traceImage.classList.remove('fit-screen');
-    fitBtn.textContent = 'Fit to Screen';
+    fitBtn.innerHTML = '<span class="material-symbols-rounded">fit_screen</span> Fit to Screen';
     updateTransform();
 });
 
