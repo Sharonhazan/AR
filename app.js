@@ -13,6 +13,13 @@ const traceImage = document.getElementById('trace-image');
 const opacitySlider = document.getElementById('opacity-slider');
 const scaleSlider = document.getElementById('scale-slider');
 
+// Menu Toggle
+const menuToggle = document.getElementById('menu-toggle');
+const uiContent = document.querySelector('.ui-content');
+menuToggle.addEventListener('click', () => {
+    uiContent.classList.toggle('collapsed');
+});
+
 // Start Camera
 async function startCamera() {
     try {
