@@ -24,10 +24,18 @@ menuToggle.addEventListener('click', () => {
 async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: "environment" },
+            video: { 
+                facingMode: "environment",
+                width:  { ideal: 4096 },
+                height: { ideal: 4096 }
+            },
             audio: false 
         });
         video.srcObject = stream;
+
+        const track = stream.getVideoTracks()[0];
+        const settings = track.getSettings();
+        console.log(`Camera resolution: ${settings.width}x${settings.height}`);
     } catch (err) {
         alert("Please allow camera access to use this app.");
     }
