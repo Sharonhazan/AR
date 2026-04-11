@@ -12,6 +12,8 @@ const imageLoader = document.getElementById('image-loader');
 const traceImage = document.getElementById('trace-image');
 const opacitySlider = document.getElementById('opacity-slider');
 const scaleSlider = document.getElementById('scale-slider');
+const rotateSlider = document.getElementById('rotate-slider');
+const rotateReset = document.getElementById('rotate-reset');
 
 // Menu Toggle
 const menuToggle = document.getElementById('menu-toggle');
@@ -58,6 +60,7 @@ fitBtn.addEventListener('click', () => {
     fitBtn.innerHTML = isFit ? '<span class="material-symbols-rounded">fullscreen_exit</span> Original Size' : '<span class="material-symbols-rounded">fit_screen</span> Fit to Screen';
     if (isFit) {
         scaleSlider.value = 1;
+        rotateSlider.value = 0;
         updateTransform();
     }
 });
@@ -119,7 +122,8 @@ overlay.addEventListener('touchend', onDragEnd);
 
 function updateTransform() {
     const scale = scaleSlider.value;
-    traceImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    const rotate = rotateSlider.value;
+    traceImage.style.transform = `translate(${posX}px, ${posY}px) scale(${scale}) rotate(${rotate}deg)`;
 }
 
 // Controls
@@ -127,6 +131,12 @@ opacitySlider.addEventListener('input', (e) => traceImage.style.opacity = e.targ
 scaleSlider.addEventListener('input', (e) => {
     traceImage.classList.remove('fit-screen');
     fitBtn.innerHTML = '<span class="material-symbols-rounded">fit_screen</span> Fit to Screen';
+    updateTransform();
+});
+
+rotateSlider.addEventListener('input', () => updateTransform());
+rotateReset.addEventListener('click', () => {
+    rotateSlider.value = 0;
     updateTransform();
 });
 
